@@ -1,1 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
 
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#0b0e13"
+  >
+
+  <meta
+    name="description"
+    content="AI-powered thumbnail and image editing studio."
+  >
+
+  <title>Thumbnail Maker Studio</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header class="tm-header">
+
+    <div class="tm-brand">
+      <div class="tm-logo">TM</div>
+
+      <div>
+        <strong>Thumbnail Maker</strong>
+        <small>Creative Studio</small>
+      </div>
+    </div>
+
+    <nav class="tm-navigation">
+
+      <button
+        class="tm-nav active"
+        data-page="editorPage"
+        type="button"
+      >
+        🎨 Editor
+      </button>
+
+      <button
+        class="tm-nav"
+        data-page="aiPage"
+        type="button"
+      >
+        ✨ AI Studio
+      </button>
+
+      <button
+        class="tm-nav"
+        data-page="pricingPage"
+        type="button"
+      >
+        💎 Plans
+      </button>
+
+      <button
+        class="tm-nav"
+        data-page="accountPage"
+        type="button"
+      >
+        👤 Account
+      </button>
+
+    </nav>
+
+    <div class="tm-header-actions">
+
+      <button
+        id="undoBtn"
+        class="tm-small-button"
+        type="button"
+        title="Undo"
+      >
+        ↶
+      </button>
+
+      <button
+        id="redoBtn"
+        class="tm-small-button"
+        type="button"
+        title="Redo"
+      >
+        ↷
+      </button>
+
+      <button
+        id="downloadBtn"
+        class="tm-button primary"
+        type="button"
+      >
+        ⬇ Download
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       EDITOR PAGE
+       ===================================================== -->
+
+  <main
+    id="editorPage"
+    class="tm-page active"
+  >
+
+    <section class="tm-editor">
+
+      <!-- LEFT TOOLBAR -->
+
+      <aside class="tm-toolbar">
+
+        <button
+          class="tm-tool active"
+          data-tool="select"
+          type="button"
+        >
+          🖱️
+          <span>Select</span>
+        </button>
+
+        <button
+          class="tm-tool"
+          data-tool="upload"
+          type="button"
+        >
+          📤
+          <span>Upload</span>
+        </button>
+
+        <button
+          class="tm-tool"
+          data-tool="crop"
+          type="button"
+        >
+          ✂️
+          <span>Crop</span>
+        </button>
+
+        <button
+          class="tm-tool"
+          data-tool="text"
+          type="button"
+        >
+          T
+          <span>Text</span>
+        </button>
+
+        <button
+          class="tm-tool"
+          data-tool="image"
+          type="button"
+        >
+          🖼️
+          <span>Image</span>
+        </button>
+
+        <button
+          class="tm-tool"
+          data-tool="background"
+          type="button"
+        >
+          🎨
+          <span>BG</span>
+        </button>
+
+        <button
+          class="tm-tool"
+          data-tool="green-screen"
+          type="button"
+        >
+          🟢
+          <span>Green</span>
+        </button>
+
+        <button
+          class="tm-tool"
+          data-tool="remove-bg"
+          type="button"
+        >
+          🪄
+          <span>Remove BG</span>
+        </button>
+
+        <button
+          class="tm-tool"
+          data-tool="effects"
+          type="button"
+        >
+          ✨
+          <span>Effects</span>
+        </button>
+
+        <button
+          class="tm-tool"
+          data-tool="filters"
+          type="button"
+        >
+          🔆
+          <span>Filters</span>
+        </button>
+
+        <button
+          class="tm-tool"
+          data-tool="layers"
+          type="button"
+        >
+          🗂️
+          <span>Layers</span>
+        </button>
+
+      </aside>
+
+
+      <!-- MAIN WORKSPACE -->
+
+      <section class="tm-workspace">
+
+        <div class="tm-canvas-wrap">
+
+          <canvas
+            id="tmCanvas"
+            width="1280"
+            height="720"
+          ></canvas>
+
+          <div
+            id="emptyState"
+            class="tm-empty"
+          >
+
+            <strong>Start creating</strong>
+
+            <span>
+              Upload an image or start with a blank
+              thumbnail.
+            </span>
+
+            <button
+              id="uploadImageBtn"
+              class="tm-button primary"
+              type="button"
+            >
+              📤 Upload Image
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- HISTORY -->
+
+        <div class="tm-history">
+
+          <button
+            id="historyUndo"
+            class="tm-small-button"
+            type="button"
+          >
+            ↶ Undo
+          </button>
+
+          <button
+            id="historyRedo"
+            class="tm-small-button"
+            type="button"
+          >
+            ↷ Redo
+          </button>
+
+          <button
+            id="resetBtn"
+            class="tm-small-button"
+            type="button"
+          >
+            🔄 Reset
+          </button>
+
+          <button
+            id="clearBtn"
+            class="tm-small-button"
+            type="button"
+          >
+            🗑️ Clear
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- RIGHT PROPERTIES PANEL -->
+
+      <aside class="tm-properties">
+
+        <!-- GENERAL -->
+
+        <div class="tm-panel-card">
+
+          <h3>⚙️ Properties</h3>
+
+          <label>
+            Width
+          </label>
+
+          <input
+            id="canvasWidth"
+            type="number"
+            value="1280"
+            min="100"
+            max="4000"
+          >
+
+          <label>
+            Height
+          </label>
+
+          <input
+            id="canvasHeight"
+            type="number"
+            value="720"
+            min="100"
+            max="4000"
+          >
+
+          <button
+            id="applySizeBtn"
+            class="tm-button primary full"
+            type="button"
+            style="margin-top:12px;"
+          >
+            Apply Size
+          </button>
+
+        </div>
+
+
+        <!-- CROP -->
+
+        <div class="tm-panel-card">
+
+          <h3>✂️ Crop</h3>
+
+          <div class="tm-crop-grid">
+
+            <button
+              type="button"
+              data-ratio="free"
+            >
+              Free
+            </button>
+
+            <button
+              type="button"
+              data-ratio="1:1"
+            >
+              1:1
+            </button>
+
+            <button
+              type="button"
+              data-ratio="16:9"
+            >
+              16:9
+            </button>
+
+            <button
+              type="button"
+              data-ratio="4:3"
+            >
+              4:3
+            </button>
+
+            <button
+              type="button"
+              data-ratio="9:16"
+            >
+              9:16
+            </button>
+
+            <button
+              type="button"
+              data-ratio="4:5"
+            >
+              4:5
+            </button>
+
+          </div>
+
+          <button
+            id="applyCropBtn"
+            class="tm-button primary full"
+            type="button"
+          >
+            Apply Crop
+          </button>
+
+        </div>
+
+
+        <!-- IMAGE -->
+
+        <div class="tm-panel-card">
+
+          <h3>🖼️ Image</h3>
+
+          <label>
+            Opacity
+            <output id="opacityValue">100%</output>
+          </label>
+
+          <input
+            id="opacitySlider"
+            type="range"
+            min="0"
+            max="100"
+            value="100"
+          >
+
+          <label>
+            Rotation
+            <output id="rotationValue">0°</output>
+          </label>
+
+          <input
+            id="rotationSlider"
+            type="range"
+            min="-180"
+            max="180"
+            value="0"
+          >
+
+        </div>
+
+
+        <!-- TEXT -->
+
+        <div class="tm-panel-card">
+
+          <h3>🔤 Text</h3>
+
+          <input
+            id="textInput"
+            type="text"
+            placeholder="Type your text..."
+          >
+
+          <label>
+            Font Size
+          </label>
+
+          <input
+            id="fontSize"
+            type="number"
+            value="64"
+            min="8"
+            max="500"
+          >
+
+          <button
+            id="addTextBtn"
+            class="tm-button primary full"
+            type="button"
+            style="margin-top:10px;"
+          >
+            Add Text
+          </button>
+
+        </div>
+
+
+        <!-- EFFECTS -->
+
+        <div class="tm-panel-card">
+
+          <h3>✨ Effects</h3>
+
+          <button
+            class="tm-small-button full"
+            data-effect="shadow"
+            type="button"
+          >
+            Drop Shadow
+          </button>
+
+          <button
+            class="tm-small-button full"
+            data-effect="glow"
+            type="button"
+            style="margin-top:7px;"
+          >
+            Glow
+          </button>
+
+          <button
+            class="tm-small-button full"
+            data-effect="blur"
+            type="button"
+            style="margin-top:7px;"
+          >
+            Blur
+          </button>
+
+        </div>
+
+
+        <!-- LAYERS -->
+
+        <div class="tm-panel-card">
+
+          <h3>🗂️ Layers</h3>
+
+          <div
+            id="layerList"
+            class="tm-layer-list"
+          >
+
+            <div class="tm-layer-item">
+              <span>Canvas</span>
+              <span>✓</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </aside>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       AI STUDIO PAGE
+       ===================================================== -->
+
+  <main
+    id="aiPage"
+    class="tm-page"
+  >
+
+    <div class="tm-page-container">
+
+      <div class="tm-page-heading">
+
+        <div class="tm-page-icon">
+          ✨
+        </div>
+
+        <div>
+          <h1>AI Studio</h1>
+
+          <p>
+            Create and transform images with AI-powered
+            editing tools.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="tm-ai-grid">
+
+        <section class="tm-panel-card">
+
+          <h2>AI Image Editor</h2>
+
+          <p>
+            Upload an image and describe the changes you
+            want to make.
+          </p>
+
+          <textarea
+            id="aiPrompt"
+            placeholder="Example: Change the character's expression to a big cheerful smile, add a confident pose, improve the lighting, and make the background more dramatic."
+          ></textarea>
+
+          <div class="tm-ai-options">
+
+            <button
+              class="tm-option"
+              data-ai-action="expression"
+              type="button"
+            >
+              😀 Change Expression
+            </button>
+
+            <button
+              class="tm-option"
+              data-ai-action="pose"
+              type="button"
+            >
+              🕺 Change Pose
+            </button>
+
+            <button
+              class="tm-option"
+              data-ai-action="background"
+              type="button"
+            >
+              🌄 Change Background
+            </button>
+
+            <button
+              class="tm-option"
+              data-ai-action="lighting"
+              type="button"
+            >
+              💡 Improve Lighting
+            </button>
+
+            <button
+              class="tm-option"
+              data-ai-action="character"
+              type="button"
+            >
+              🧑 Character Edit
+            </button>
+
+            <button
+              class="tm-option"
+              data-ai-action="anime"
+              type="button"
+            >
+              🌸 Anime Edit
+            </button>
+
+          </div>
+
+          <button
+            id="aiGenerateBtn"
+            class="tm-button primary full"
+            type="button"
+          >
+            ✨ Generate AI Edit
+          </button>
+
+          <div
+            id="aiStatus"
+            class="tm-status"
+          >
+            AI Studio ready.
+          </div>
+
+        </section>
+
+
+        <section class="tm-panel-card">
+
+          <h2>AI Controls</h2>
+
+          <label>
+            Strength
+            <output id="aiStrengthValue">70%</output>
+          </label>
+
+          <input
+            id="aiStrength"
+            type="range"
+            min="0"
+            max="100"
+            value="70"
+          >
+
+          <label>
+            Detail
+            <output id="aiDetailValue">80%</output>
+          </label>
+
+          <input
+            id="aiDetail"
+            type="range"
+            min="0"
+            max="100"
+            value="80"
+          >
+
+          <label>
+            Style
+          </label>
+
+          <select id="aiStyle">
+
+            <option value="realistic">
+              Realistic
+            </option>
+
+            <option value="cinematic">
+              Cinematic
+            </option>
+
+            <option value="anime">
+              Anime
+            </option>
+
+            <option value="cartoon">
+              Cartoon
+            </option>
+
+            <option value="gaming">
+              Gaming
+            </option>
+
+            <option value="dramatic">
+              Dramatic
+            </option>
+
+          </select>
+
+          <p>
+            AI features require an AI image-generation
+            service/API to actually generate new images.
+            The interface is ready for that connection.
+          </p>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- =====================================================
+       PRICING PAGE
+       ===================================================== -->
+
+  <main
+    id="pricingPage"
+    class="tm-page"
+  >
+
+    <div class="tm-page-container">
+
+      <div class="tm-page-heading">
+
+        <div class="tm-page-icon">
+          💎
+        </div>
+
+        <div>
+          <h1>Choose Your Plan</h1>
+
+          <p>
+            Unlock more creative tools as your needs grow.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="tm-pricing-grid">
+
+        <article class="tm-plan">
+
+          <h2>Free</h2>
+
+          <div class="tm-price">
+            $0
+            <small>/month</small>
+          </div>
+
+          <ul>
+
+            <li>✓ Basic editor</li>
+            <li>✓ Image upload</li>
+            <li>✓ Basic crop</li>
+            <li>✓ Text tools</li>
+            <li>✓ Basic effects</li>
+            <li>✓ Standard downloads</li>
+
+          </ul>
+
+          <button
+            class="tm-button full"
+            data-plan="Free"
+            type="button"
+          >
+            Current Plan
+          </button>
+
+        </article>
+
+
+        <article class="tm-plan">
+
+          <h2>Creator</h2>
+
+          <div class="tm-price">
+            $4.99
+            <small>/month</small>
+          </div>
+
+          <ul>
+
+            <li>✓ Everything in Free</li>
+            <li>✓ Advanced effects</li>
+            <li>✓ Green screen</li>
+            <li>✓ Background removal</li>
+            <li>✓ More export options</li>
+            <li>✓ More storage</li>
+
+          </ul>
+
+          <button
+            class="tm-button primary full"
+            data-plan="Creator"
+            type="button"
+          >
+            Choose Creator
+          </button>
+
+        </article>
+
+
+        <article class="tm-plan featured">
+
+          <div class="tm-plan-badge">
+            POPULAR
+          </div>
+
+          <h2>Pro</h2>
+
+          <div class="tm-price">
+            $9.99
+            <small>/month</small>
+          </div>
+
+          <ul>
+
+            <li>✓ Everything in Creator</li>
+            <li>✓ AI Studio</li>
+            <li>✓ AI image editing</li>
+            <li>✓ Advanced crop tools</li>
+            <li>✓ Premium templates</li>
+            <li>✓ High-quality exports</li>
+
+          </ul>
+
+          <button
+            class="tm-button primary full"
+            data-plan="Pro"
+            type="button"
+          >
+            Choose Pro
+          </button>
+
+        </article>
+
+
+        <article class="tm-plan ultimate">
+
+          <h2>Ultimate</h2>
+
+          <div class="tm-price">
+            $19.99
+            <small>/month</small>
+          </div>
+
+          <ul>
+
+            <li>✓ Everything in Pro</li>
+            <li>✓ Maximum AI features</li>
+            <li>✓ Priority processing</li>
+            <li>✓ Premium assets</li>
+            <li>✓ Unlimited projects</li>
+            <li>✓ Commercial exports</li>
+
+          </ul>
+
+          <button
+            class="tm-button primary full"
+            data-plan="Ultimate"
+            type="button"
+          >
+            Choose Ultimate
+          </button>
+
+        </article>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- =====================================================
+       ACCOUNT PAGE
+       ===================================================== -->
+
+  <main
+    id="accountPage"
+    class="tm-page"
+  >
+
+    <div class="tm-page-container">
+
+      <div class="tm-account">
+
+        <section class="tm-account-card">
+
+          <div class="tm-account-icon">
+            👤
+          </div>
+
+          <h1>Welcome Back</h1>
+
+          <p>
+            Sign in to save your projects, access your
+            subscription and continue creating.
+          </p>
+
+          <button
+            id="googleLoginBtn"
+            class="tm-google-button"
+            type="button"
+          >
+            <strong>G</strong>
+            Continue with Google
+          </button>
+
+          <div class="tm-divider">
+            or
+          </div>
+
+          <input
+            id="emailInput"
+            type="email"
+            placeholder="Email address"
+          >
+
+          <input
+            id="passwordInput"
+            type="password"
+            placeholder="Password"
+          >
+
+          <button
+            id="loginBtn"
+            class="tm-button primary full"
+            type="button"
+          >
+            Log In
+          </button>
+
+          <button
+            id="createAccountBtn"
+            class="tm-button full"
+            type="button"
+            style="margin-top:8px;"
+          >
+            Create Account
+          </button>
+
+        </section>
+
+
+        <section class="tm-account-card">
+
+          <h2>Your Account</h2>
+
+          <p>
+            Account information and subscription status will
+            appear here after you sign in.
+          </p>
+
+          <div
+            id="accountStatus"
+            class="tm-status"
+          >
+            Not signed in.
+          </div>
+
+          <button
+            id="logoutBtn"
+            class="tm-button full"
+            type="button"
+            style="margin-top:12px;"
+          >
+            Log Out
+          </button>
+
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- =====================================================
+       HIDDEN FILE INPUT
+       ===================================================== -->
+
+  <input
+    id="imageUpload"
+    type="file"
+    accept="image/*"
+    hidden
+  >
+
+
+  <!-- =====================================================
+       APPLICATION SCRIPT
+       ===================================================== -->
+
+  <script src="app.js"></script>
+
+</body>
+        </html>
